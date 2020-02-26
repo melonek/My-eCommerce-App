@@ -4,6 +4,9 @@ const app = express();
 require("dotenv").config();
 //import mongoose
 const mongoose = require("mongoose");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 // load env variables
 require("dotenv").config();
 //import routes
@@ -22,6 +25,11 @@ mongoose
 mongoose.connection.on("error", err => {
   console.log(`DB connection error: ${err.message}`);
 });
+
+//middlewares
+app.use(morgan("dev"));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 //routes middleware
 app.use("/api", userRoutes);
