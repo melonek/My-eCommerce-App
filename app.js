@@ -4,16 +4,12 @@ const app = express();
 require("dotenv").config();
 //import mongoose
 const mongoose = require("mongoose");
-
-app.get("/", (req, res) => {
-  res.send("hello from node");
-});
+// load env variables
+require("dotenv").config();
+//import routes
+const userRoutes = require("./routes/user");
 
 const port = process.env.PORT || 8000;
-
-// load env variables
-const dotenv = require("dotenv");
-dotenv.config();
 
 //db connection
 mongoose
@@ -26,6 +22,9 @@ mongoose
 mongoose.connection.on("error", err => {
   console.log(`DB connection error: ${err.message}`);
 });
+
+//routes middleware
+app.use("/api", userRoutes);
 
 app.listen(port, () => {
   console.log(`🌏Server is running on port ${port}🌐`);
