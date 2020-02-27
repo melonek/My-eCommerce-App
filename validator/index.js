@@ -15,7 +15,7 @@ exports.userSignupValidator = (req, res) => {
     .withMessage("Password must contain at least 6 characters");
   const errors = req.validationErrors();
   if (errors) {
-    const firstError = errors.map(error.message)[0];
+    const firstError = errors.map(error.msg)[0];
     return res.status(400).json({ error: firstError });
   }
   next();
