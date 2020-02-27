@@ -30,4 +30,17 @@ exports.signin = (req, res) => {
     }
   });
   //if user is found make sure the email and password match
+  // create authenticate method in user model
+  if (!user.authenticate(password)) {
+    return res.status(401).json({
+      error: "Email and password don't match"
+    });
+  }
+  // generate a signed token with user id and secret
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+  //persist the tokes as "t" in cookie with expiry date
+  res.cookie("t", token, { expire: new Date() + 9999 });
+  //return response with user and token to frontend client
+  const { _id, name, email, role } = role;
+  return res.json({ token, user: { _id, email, name, role } });
 };
