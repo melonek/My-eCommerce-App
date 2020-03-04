@@ -2,6 +2,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken"); //to generate signed token
 const expressJwt = require("express-jwt"); // for authorization check
 const { errorHandler } = require("../helpers/dbErrorHandler");
+
 // using promise
 exports.signup = (req, res) => {
   // console.log("req.body", req.body);
@@ -34,7 +35,7 @@ exports.signin = (req, res) => {
     // create authenticate method in user model
     if (!user.authenticate(password)) {
       return res.status(401).json({
-        error: "Email and password don't match"
+        error: "Email and password dont match"
       });
     }
     // generate a signed token with user id and secret
