@@ -4,15 +4,17 @@ const fs = require("fs");
 const Product = require("../models/product");
 
 exports.productById = (req, res, next, id) => {
-  Product.findById(id).exec((err, product) => {
-    if (err || !product) {
-      return res.status(400).json({
-        error: "Product not found"
-      });
-    }
-    req.product = product;
-    next();
-  });
+  Product.findById(id)
+    .populate("category")
+    .exec((err, product) => {
+      if (err || !product) {
+        return res.status(400).json({
+          error: "Product not found"
+        });
+      }
+      req.product = product;
+      next();
+    });
 };
 
 exports.read = (req, res) => {
@@ -30,7 +32,7 @@ exports.create = (req, res) => {
       });
     }
 
-    //check for all fields
+    // check for all fields
     const { name, description, price, category, quantity, shipping } = fields;
 
     if (
