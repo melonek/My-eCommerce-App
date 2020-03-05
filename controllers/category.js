@@ -1,11 +1,11 @@
 const Category = require("../models/category");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
-exports.categoryByID = (req, res, next) => {
+exports.categoryById = (req, res, next, id) => {
   Category.findById(id).exec((err, category) => {
     if (err || !category) {
       return res.status(400).json({
-        error: errorHandler(err)
+        error: "Category does not exist"
       });
     }
     req.category = category;
@@ -23,4 +23,8 @@ exports.create = (req, res) => {
     }
     res.json({ data });
   });
+};
+
+exports.read = (req, res) => {
+  return res.json(req.category);
 };
