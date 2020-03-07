@@ -22,7 +22,7 @@ router.put(
   update
 );
 router.delete(
-  "/category/:category/:userId",
+  "/category/:categoryId/:userId",
   requireSignin,
   isAuth,
   isAdmin,

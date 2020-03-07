@@ -51,12 +51,12 @@ exports.remove = (req, res) => {
       });
     }
     res.json({
-      message: "Category delated"
+      message: "Category deleted"
     });
   });
 };
 
-expoets.list = (req, res) => {
+exports.list = (req, res) => {
   Category.find().exec((err, data) => {
     if (err) {
       return res.status(400).json({
