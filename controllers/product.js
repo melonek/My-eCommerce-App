@@ -165,3 +165,12 @@ exports.list = (req, res) => {
       res.send(products);
     });
 };
+
+/**
+ * it will find the products based on the req product category
+ * other products that have te same category will be returned
+ */
+
+exports.listRelated = (req, res) => {
+    let limit = 
+};
