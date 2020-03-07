@@ -42,6 +42,27 @@ exports.update = (req, res) => {
   });
 };
 
-expoets.remove = (req, res) => {};
+exports.remove = (req, res) => {
+  const category = req.category;
+  category.remove((err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler(err)
+      });
+    }
+    res.json({
+      message: "Category delated"
+    });
+  });
+};
 
-expoets.list = (req, res) => {};
+expoets.list = (req, res) => {
+  Category.find().exec((err, data) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler(err)
+      });
+    }
+    res.json(data);
+  });
+};
