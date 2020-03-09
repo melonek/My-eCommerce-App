@@ -1,14 +1,10 @@
 {
-  "name": "My-eCommerce-App",
+  "name": "ecommerce",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/melonek/My-eCommerce-App.git"
   },
   "keywords": [],
   "author": "",
