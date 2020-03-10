@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Layout from "../core/Layout";
 import { API } from "../config";
+// import { signup } from "../auth";
 
 const Signup = () => {
   const [values, setValues] = useState({
@@ -10,6 +12,7 @@ const Signup = () => {
     error: "",
     success: false
   });
+
   const { name, email, password, success, error } = values;
 
   const handleChange = name => event => {
@@ -36,6 +39,7 @@ const Signup = () => {
 
   const clickSubmit = event => {
     event.preventDefault();
+    setValues({ ...values, error: false });
     signup({ name, email, password }).then(data => {
       if (data.error) {
         setValues({ ...values, error: data.error, success: false });
@@ -46,7 +50,7 @@ const Signup = () => {
           email: "",
           password: "",
           error: "",
-          succcess: true
+          success: true
         });
       }
     });
@@ -103,7 +107,7 @@ const Signup = () => {
       className="alert alert-info"
       style={{ display: success ? "" : "none" }}
     >
-      New account is created. Please signin
+      New account is created. Please <Link to="/signin">Signin</Link>
     </div>
   );
 
@@ -116,7 +120,6 @@ const Signup = () => {
       {showSuccess()}
       {showError()}
       {signUpForm()}
-      {JSON.stringify(values)}
     </Layout>
   );
 };
