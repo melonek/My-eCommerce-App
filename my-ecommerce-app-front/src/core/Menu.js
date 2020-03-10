@@ -21,20 +21,20 @@ const Menu = ({ history }) => (
       <li className="nav-item">
         <Link
           className="nav-link"
-          style={isActive(history, "/signup")}
-          to="/signup"
+          style={isActive(history, "/signin")}
+          to="/signin"
         >
-          Signup
+          Signin
         </Link>
       </li>
 
       <li className="nav-item">
         <Link
           className="nav-link"
-          style={isActive(history, "/signin")}
-          to="/signin"
+          style={isActive(history, "/signup")}
+          to="/signup"
         >
-          Signin
+          Signup
         </Link>
       </li>
     </ul>
