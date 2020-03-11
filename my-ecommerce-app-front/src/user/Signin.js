@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Layout from "../core/Layout";
 import { API } from "../config";
-import { signin } from "../auth";
+import { signin, authenticate } from "../auth";
 
 const Signin = () => {
   const [values, setValues] = useState({
-    email: "",
-    password: "",
+    email: "babolek@wp.pl",
+    password: "babolek1",
     error: "",
     loading: false,
     redirectToRefferer: false
@@ -26,9 +26,10 @@ const Signin = () => {
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
       } else {
-        setValues({
-          ...values,
-          redirectToRefferer: true
+        authenticate(data, () => {
+          setValues({
+            redirectToRefferer: true
+          });
         });
       }
     });
@@ -85,8 +86,8 @@ const Signin = () => {
 
   return (
     <Layout
-      title="Signup"
-      description="Signup to Node React e-Commerce App"
+      title="Signin"
+      description="Signin to Node React e-Commerce App"
       className="container col-md-8 offset-md-2"
     >
       {showLoading()}
