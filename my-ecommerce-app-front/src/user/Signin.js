@@ -29,7 +29,8 @@ const Signin = () => {
       } else {
         authenticate(data, () => {
           setValues({
-            redirectToRefferer: true
+            ...values,
+            redirectToReferrer: true
           });
         });
       }
