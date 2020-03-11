@@ -37,9 +37,15 @@ const AddProduct = () => {
     formData
   } = values;
 
+  useEffect(() => {
+    setValues({ ...values, formData: new FormData() });
+  });
+
   const handleChange = name => event => {
-    const value = 
-  }
+    const value = name === "photo" ? event.target.files[0] : event.target.value;
+    formData.set(name, value);
+    setValues({ ...values, [name]: value });
+  };
 
   const newPostForm = () => (
     <form className="mb-3">
