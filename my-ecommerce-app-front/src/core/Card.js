@@ -14,9 +14,11 @@ const Card = ({ product }) => {
           </button>
         </Link>
         <button className="btn btn-outline-warning mt-2 mb-2">
-          Add to card
+          Add to cart
         </button>
       </div>
     </div>
   );
 };
+
+export default Card;

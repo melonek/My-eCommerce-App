@@ -4,26 +4,27 @@ import { getProducts, getProduct } from "./apiCore";
 import Card from "./Card";
 
 const Home = () => {
-  const [productBySell, setProductBySell] = useState([]);
-  const [productByArrival, setProductByArrival] = useState([]);
+  const [productsBySell, setProductsBySell] = useState([]);
+  const [productsByArrival, setProductsByArrival] = useState([]);
   const [error, setError] = useState(false);
 
   const loadProductsBySell = () => {
-    getProduct("sold").then(data => {
+    getProducts("sold").then(data => {
       if (data.error) {
         setError(data.error);
       } else {
-        setProductBySell(data);
+        setProductsBySell(data);
       }
     });
   };
 
   const loadProductsByArrival = () => {
-    getProduct("createdAt").then(data => {
+    getProducts("createdAt").then(data => {
+      console.log(data);
       if (data.error) {
         setError(data.error);
       } else {
-        setProductByArrival(data);
+        setProductsByArrival(data);
       }
     });
   };
@@ -34,11 +35,28 @@ const Home = () => {
   }, []);
 
   return (
-    <Layout title="Home Page" description="Node React e-Commerce App">
+    <Layout
+      title="FullStack React Node MongoDB Ecommerce App"
+      description="Node React E-commerce App"
+      className="container-fluid"
+    >
+      <h2 className="mb-4">New Arrivals</h2>
+      <div className="row">
+        {productsByArrival.map((product, i) => (
+          <div key={i} className="col-4 mb-3">
+            <Card product={product} />
+          </div>
+        ))}
+      </div>
+
       <h2 className="mb-4">Best Sellers</h2>
-      {loadProductsBySell.map((product, i) => (
-        <Card key={i} product={product} />
-      ))}
+      <div className="row">
+        {productsBySell.map((product, i) => (
+          <div key={i} className="col-4 mb-3">
+            <Card product={product} />
+          </div>
+        ))}
+      </div>
     </Layout>
   );
 };
