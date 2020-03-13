@@ -46,18 +46,18 @@ const Search = () => {
     e.preventDefault();
     searchData();
   };
-};
 
-const handleChange = name => event => {
-  setData({ ...data, [name]: event.target.value, searched: false });
+  const handleChange = name => event => {
+    setData({ ...data, [name]: event.target.value, searched: false });
+  };
 
   const searchForm = () => (
     <form onSubmit={searchSubmit}>
-      <span className="inout-group-text">
+      <span className="input-group-text">
         <div className="input-group input-group-lg">
           <div className="input-group-prepend">
             <select className="btn mr-2" onChange={handleChange("category")}>
-              <option value="All">Pick Category</option>
+              <option value="All">All</option>
               {categories.map((c, i) => (
                 <option key={i} value={c._id}>
                   {c.name}
@@ -81,13 +81,10 @@ const handleChange = name => event => {
   );
 
   return (
-    <div>
-      <div className="container mb-3">
-        {searchForm()}
-        {JSON.stringify(results)}
-      </div>
+    <div className="row">
+      <div className="container mb-3">{searchForm()}</div>
+      {JSON.stringify(results)}
     </div>
   );
 };
-
 export default Search;
