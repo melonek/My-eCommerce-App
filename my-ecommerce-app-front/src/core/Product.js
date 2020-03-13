@@ -24,12 +24,15 @@ const Product = props => {
 
   return (
     <Layout
-      title="FullStack React Node MongoDB Ecommerce App"
-      description="Node React E-commerce App"
+      title={product.name}
+      description={
+        product && product.description && product.description.substring(0, 100)
+      }
       className="container-fluid"
     >
-      <p className="mb-4">Single Product</p>
-      <div className="row">{JSON.stringify(product)}</div>
+      <div className="row">
+        {product && product.description && <Card product={product} />}
+      </div>
     </Layout>
   );
 };
