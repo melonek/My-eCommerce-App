@@ -12,8 +12,7 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     success: false,
     clientToken: null,
     error: "",
-    instance: {},
-    address: ""
+    instance: {}
   });
 
   const userId = isAuthenticated() && isAuthenticated().user._id;
@@ -39,10 +38,6 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     return products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
     }, 0);
-  };
-
-  const handleAddress = event => {
-    setData({ ...data, address: event.target.value });
   };
 
   const showCheckout = () => {
@@ -81,16 +76,6 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     <div onBlur={() => setData({ ...data, error: "" })}>
       {data.clientToken !== null && products.length > 0 ? (
         <div>
-          <div className="gorm-group mb-3">
-            <label className="text-muted">Delivery address:</label>
-            <textarea
-              onChange={handleAddress}
-              className="form-control"
-              value={data.address}
-              placeholder="Type your delivery address here..."
-            />
-          </div>
-
           <DropIn
             options={{
               authorization: data.clientToken,
