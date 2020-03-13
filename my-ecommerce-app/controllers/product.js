@@ -32,7 +32,6 @@ exports.create = (req, res) => {
         error: "Image could not be uploaded"
       });
     }
-
     // check for all fields
     const { name, description, price, category, quantity, shipping } = fields;
 
@@ -51,8 +50,11 @@ exports.create = (req, res) => {
 
     let product = new Product(fields);
 
+    // 1kb = 1000
+    // 1mb = 1000000
+
     if (files.photo) {
-      console.log("FILES PHOTO: ", files.photo);
+      // console.log("FILES PHOTO: ", files.photo);
       if (files.photo.size > 1000000) {
         return res.status(400).json({
           error: "Image should be less than 1mb in size"
@@ -64,8 +66,9 @@ exports.create = (req, res) => {
 
     product.save((err, result) => {
       if (err) {
+        console.log("PRODUCT CREATE ERROR ", err);
         return res.status(400).json({
-          error: errorHandler(error)
+          error: errorHandler(err)
         });
       }
       res.json(result);
@@ -97,27 +100,14 @@ exports.update = (req, res) => {
       });
     }
 
-    // check for all fields
-    const { name, description, price, category, quantity, shipping } = fields;
-
-    if (
-      !name ||
-      !description ||
-      !price ||
-      !category ||
-      !quantity ||
-      !shipping
-    ) {
-      return res.status(400).json({
-        error: "All fields are required"
-      });
-    }
-
     let product = req.product;
     product = _.extend(product, fields);
 
+    // 1kb = 1000
+    // 1mb = 1000000
+
     if (files.photo) {
-      console.log("FILES PHOTO: ", files.photo);
+      // console.log("FILES PHOTO: ", files.photo);
       if (files.photo.size > 1000000) {
         return res.status(400).json({
           error: "Image should be less than 1mb in size"
@@ -130,7 +120,7 @@ exports.update = (req, res) => {
     product.save((err, result) => {
       if (err) {
         return res.status(400).json({
-          error: errorHandler(error)
+          error: errorHandler(err)
         });
       }
       res.json(result);
@@ -139,13 +129,11 @@ exports.update = (req, res) => {
 };
 
 /**
- * *sell / arrival
+ * sell / arrival
  * by sell = /products?sortBy=sold&order=desc&limit=4
- * by arrival = /products?createdAt=sold&order=desc&limit=4
+ * by arrival = /products?sortBy=createdAt&order=desc&limit=4
  * if no params are sent, then all products are returned
  */
-
-//The method to return the products:
 
 exports.list = (req, res) => {
   let order = req.query.order ? req.query.order : "asc";
@@ -169,16 +157,13 @@ exports.list = (req, res) => {
 
 /**
  * it will find the products based on the req product category
- * other products that have te same category will be returned
+ * other products that has the same category, will be returned
  */
 
 exports.listRelated = (req, res) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
-  Product.find({
-    _id: { $ne: req.product },
-    category: req.product.category
-  })
+  Product.find({ _id: { $ne: req.product }, category: req.product.category })
     .limit(limit)
     .populate("category", "_id name")
     .exec((err, products) => {
@@ -283,4 +268,24 @@ exports.listSearch = (req, res) => {
       res.json(products);
     }).select("-photo");
   }
+};
+
+exports.decreaseQuantity = (req, res, next) => {
+  let bulkOps = req.body.order.products.map(item => {
+    return {
+      updateOne: {
+        filter: { _id: item._id },
+        update: { $inc: { quantity: -item.count, sold: +item.count } }
+      }
+    };
+  });
+
+  Product.bulkWrite(bulkOps, {}, (error, products) => {
+    if (error) {
+      return res.status(400).json({
+        error: "Could not update product"
+      });
+    }
+    next();
+  });
 };

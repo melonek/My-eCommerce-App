@@ -26,7 +26,6 @@ router.delete(
   isAdmin,
   remove
 );
-
 router.put(
   "/product/:productId/:userId",
   requireSignin,
