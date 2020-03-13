@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Layout from "./Layout";
 import {
   getProducts,
   getBraintreeClientToken,
-  processPayment
+  processPayment,
+  createOrder
 } from "./apiCore";
 import { emptyCart } from "./cartHelpers";
 import Card from "./Card";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
+// import "braintree-web"; // not using this package
 import DropIn from "braintree-web-drop-in-react";
 
 const Checkout = ({ products, setRun = f => f, run = undefined }) => {
@@ -17,7 +18,8 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     success: false,
     clientToken: null,
     error: "",
-    instance: {}
+    instance: {},
+    address: ""
   });
 
   const userId = isAuthenticated() && isAuthenticated().user._id;
@@ -39,6 +41,10 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     getToken(userId, token);
   }, []);
 
+  const handleAddress = event => {
+    setData({ ...data, address: event.target.value });
+  };
+
   const getTotal = () => {
     return products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
@@ -54,6 +60,9 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
       </Link>
     );
   };
+
+  let deliveryAddress = data.address;
+
   const buy = () => {
     setData({ loading: true });
     // send the nonce to your server
@@ -75,21 +84,44 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
           paymentMethodNonce: nonce,
           amount: getTotal(products)
         };
+
         processPayment(userId, token, paymentData)
           .then(response => {
-            //console.log(response
-            setData({ ...data, success: response.success });
-            emptyCart(() => {
-              console.log("Payment Success");
-            });
+            console.log(response);
             // empty cart
-            //create order
+            // create order
+
+            const createOrderData = {
+              products: products,
+              transaction_id: response.transaction.id,
+              amount: response.transaction.amount,
+              address: deliveryAddress
+            };
+
+            createOrder(userId, token, createOrderData)
+              .then(response => {
+                emptyCart(() => {
+                  setRun(!run); // run useEffect in parent Cart
+                  console.log("payment success and empty cart");
+                  setData({
+                    loading: false,
+                    success: true
+                  });
+                });
+              })
+              .catch(error => {
+                console.log(error);
+                setData({ loading: false });
+              });
           })
-          .catch(error => console.log(error));
+          .catch(error => {
+            console.log(error);
+            setData({ loading: false });
+          });
       })
       .catch(error => {
         // console.log("dropin error: ", error);
-        setData({ error, error: error.message });
+        setData({ ...data, error: error.message });
       });
   };
 
@@ -97,6 +129,16 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     <div onBlur={() => setData({ ...data, error: "" })}>
       {data.clientToken !== null && products.length > 0 ? (
         <div>
+          <div className="gorm-group mb-3">
+            <label className="text-muted">Delivery address:</label>
+            <textarea
+              onChange={handleAddress}
+              className="form-control"
+              value={data.address}
+              placeholder="Type your delivery address here..."
+            />
+          </div>
+
           <DropIn
             options={{
               authorization: data.clientToken,
@@ -145,4 +187,5 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     </div>
   );
 };
+
 export default Checkout;
