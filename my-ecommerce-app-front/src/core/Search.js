@@ -11,17 +11,25 @@ const Search = () => {
     searched: false
   });
 
+  const { categories, category, search, results, searched } = data;
+
   const loadCategories = () => {
     getCategories().then(data => {
       if (data.error) {
         console.log(data.error);
+      } else {
+        setData({ ...data, categories: data });
       }
     });
   };
 
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
   return (
     <div>
-      <h2>Search bar</h2>
+      <h2>Search bar {JSON.stringify(categories)}</h2>
     </div>
   );
 };
