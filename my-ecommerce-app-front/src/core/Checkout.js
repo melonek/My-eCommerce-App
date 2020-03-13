@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
-import { getProducts } from "./apiCore";
+import { getProducts, getBraintreeClientToken } from "./apiCore";
 import Card from "./Card";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 
 const Checkout = ({ products }) => {
+  const [data, setData] = {
+    loading: false,
+    success: false,
+    clientToken: null,
+    error: "",
+    instance: {},
+    address: ""
+  };
+
+  
   const getTotal = () => {
     return products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
