@@ -5,12 +5,13 @@ import Card from "./Card";
 const Shop = () => {
   return (
     <Layout
-      title="FullStack React Node MongoDB Ecommerce App"
-      description="Node React E-commerce App"
+      title="Shop Plantex"
+      description="Search for some unique plants! E-commerce App"
       className="container-fluid"
     >
-      <div className="row>">
+      <div className="row">
         <div className="col-4">left sidebar</div>
+
         <div className="col-8">right sidebar</div>
       </div>
     </Layout>
