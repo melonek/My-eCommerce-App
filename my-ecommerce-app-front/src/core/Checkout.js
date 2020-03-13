@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
-import { getProducts, getBraintreeClientToken } from "./apiCore";
+import {
+  getProducts,
+  getBraintreeClientToken,
+  processPayment
+} from "./apiCore";
 import Card from "./Card";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -57,17 +61,23 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     let getNonce = data.instance
       .requestPaymentMethod()
       .then(data => {
-        console.log(data);
-        nonce = data.nonce; //once you have nonce (card type, card nuber) send nonce as "paymentMethodNonce"
-        //and also total to be charged
-        console.log(
-          "send nonce and total to process:",
-          nonce,
-          getTotal(products)
-        );
+        // console.log(data);
+        nonce = data.nonce;
+        // console.log(
+        //   "send nonce and total to process:",
+        //   nonce,
+        //   getTotal(products)
+        // );
+        const paymentData = {
+          paymentMethodNonce: nonce,
+          amount: getTotal(products)
+        };
+        processPayment(userId, token, paymentData)
+          .then(response => console.log(response))
+          .catch(error => console.log(error));
       })
       .catch(error => {
-        console.log("dropin error: ", error);
+        // console.log("dropin error: ", error);
         setData({ ...data, error: error.message });
       });
   };
