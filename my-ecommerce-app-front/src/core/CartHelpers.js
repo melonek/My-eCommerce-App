@@ -10,7 +10,7 @@ export const addItem = (item, next) => {
     });
 
     cart = Array.from(new Set(cart.map(p => p._id))).map(id => {
-      return cart.find(p._id === id);
+      return cart.find(p => p._id === id);
     });
     localStorage.setItem("cart", JSON.stringify(cart));
     next();
