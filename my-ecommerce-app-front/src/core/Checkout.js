@@ -47,7 +47,7 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
 
   const showCheckout = () => {
     return isAuthenticated() ? (
-      <button className="btn btn-success">Checkout</button>
+      <div>{showDropIn()}</div>
     ) : (
       <Link to="/signin">
         <button className="btn btn-primary">Sign in to checkout</button>
@@ -55,16 +55,20 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
     );
   };
 
-const showDropIn = () => {
+  const showDropIn = () => (
     <div>
-        {data.clientToken !== null && products.length > 0 ? (
-            <div>
-                <DripIn options={{
-                    authorization: data.clientToken.clientToken
-                }}
-        ) : null}
+      {data.clientToken !== null && products.length > 0 ? (
+        <div>
+          <DropIn
+            options={{
+              authorization: data.clientToken.clientToken
+            }}
+            onInstance={instance => (data.instance = instance)}
+          />
+        </div>
+      ) : null}
     </div>
-}
+  );
 
   return (
     <div>
