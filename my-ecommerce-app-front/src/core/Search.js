@@ -27,13 +27,11 @@ const Search = () => {
     loadCategories();
   }, []);
 
-  const searchSubmit = () => {
-    //
+  const searchSubmit = name => event => {
+    setData({ ...data, [name]: event.target.value, searched: false });
   };
 
-  const handleChange = () => {
-    //
-  };
+  const handleChange = () => {};
 
   const searchForm = () => (
     <form onSubmit={searchSubmit}>
@@ -66,7 +64,7 @@ const Search = () => {
 
   return (
     <div>
-      <div className="container">{searchForm()}</div>
+      <div className="container mb-3">{searchForm()}</div>
     </div>
   );
 };
