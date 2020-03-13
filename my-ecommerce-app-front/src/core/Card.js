@@ -16,6 +16,22 @@ const Card = ({ product, showViewProductButton = true }) => {
     );
   };
 
+  const showAddToCardButton = () => {
+    return (
+      <button className="btn btn-outline-warning mt-2 mb-2 mr-2">
+        Add to cart
+      </button>
+    );
+  };
+
+  const showStock = quantity => {
+    return quantity > 0 ? (
+      <span className="badge badge-primary badge-pill">In Stock</span>
+    ) : (
+      <span className="badge badge-primary badge-pill">Out of Stock</span>
+    );
+  };
+
   return (
     <div className="card">
       <div className="card-header card-header-1">{product.name}</div>
@@ -30,13 +46,13 @@ const Card = ({ product, showViewProductButton = true }) => {
           Added on {moment(product.createdAt).fromNow()}
         </p>
 
+        {showStock(product.quantity)}
+        <br />
+
         {showViewButton(showViewProductButton)}
-        <button className="btn btn-outline-warning mt-2 mb-2 mr-2">
-          Add to cart
-        </button>
+        {showAddToCardButton()}
       </div>
     </div>
   );
 };
-
 export default Card;
