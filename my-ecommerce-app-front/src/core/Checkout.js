@@ -5,6 +5,7 @@ import {
   getBraintreeClientToken,
   processPayment
 } from "./apiCore";
+import { emptyCart } from "./cartHelpers";
 import Card from "./Card";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -53,30 +54,34 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
       </Link>
     );
   };
-
   const buy = () => {
-    //send the nonce to your server
-    //nonce = data.instance.requestPaymentMethod()
+    setData({ loading: true });
+    // send the nonce to your server
+    // nonce = data.instance.requestPaymentMethod()
     let nonce;
     let getNonce = data.instance
       .requestPaymentMethod()
       .then(data => {
         // console.log(data);
         nonce = data.nonce;
+        // once you have nonce (card type, card number) send nonce as 'paymentMethodNonce'
+        // and also total to be charged
         // console.log(
-        //   "send nonce and total to process:",
-        //   nonce,
-        //   getTotal(products)
+        //     "send nonce and total to process: ",
+        //     nonce,
+        //     getTotal(products)
         // );
         const paymentData = {
           paymentMethodNonce: nonce,
           amount: getTotal(products)
         };
-
         processPayment(userId, token, paymentData)
           .then(response => {
             //console.log(response
             setData({ ...data, success: response.success });
+            emptyCart(() => {
+              console.log("Payment Success");
+            });
             // empty cart
             //create order
           })
