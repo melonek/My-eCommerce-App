@@ -35,7 +35,7 @@ const Shop = () => {
       let priceValues = handlePrice(filters);
       newFilters.filters[filterBy] = priceValues;
     }
-
+    loadFilteredResults(myFilters.filters);
     setMyFilters(newFilters);
   };
 
@@ -49,6 +49,10 @@ const Shop = () => {
       }
     }
     return array;
+  };
+
+  const loadFilteredResults = newFilters => {
+    console.log(newFilters);
   };
 
   return (
