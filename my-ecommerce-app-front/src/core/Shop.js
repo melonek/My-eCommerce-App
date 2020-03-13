@@ -21,6 +21,7 @@ const Shop = () => {
   useEffect(() => {
     init();
   }, []);
+
   return (
     <Layout
       title="Shop Plantex"
