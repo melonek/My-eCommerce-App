@@ -53,7 +53,7 @@ const Shop = () => {
           <h4>Filter by price range</h4>
           <div>
             <RadioBox
-              categories={categories}
+              prices={prices}
               handleFilters={filters => handleFilters(filters, "price")}
             />
           </div>
