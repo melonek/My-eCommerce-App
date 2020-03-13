@@ -72,13 +72,19 @@ const Checkout = ({ products, setRun = f => f, run = undefined }) => {
           paymentMethodNonce: nonce,
           amount: getTotal(products)
         };
+
         processPayment(userId, token, paymentData)
-          .then(response => console.log(response))
+          .then(response => {
+            //console.log(response
+            setData({ ...data, success: response.success });
+            // empty cart
+            //create order
+          })
           .catch(error => console.log(error));
       })
       .catch(error => {
         // console.log("dropin error: ", error);
-        setData({ ...data, error: error.message });
+        setData({ error, error: error.message });
       });
   };
 
