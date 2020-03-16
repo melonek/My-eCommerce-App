@@ -52,7 +52,7 @@ export const updateItem = (productId, count) => {
   }
 };
 
-export const removeItem = (productId, count) => {
+export const removeItem = productId => {
   let cart = [];
   if (typeof window !== "undefined") {
     if (localStorage.getItem("cart")) {
