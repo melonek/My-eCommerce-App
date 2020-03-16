@@ -32,17 +32,17 @@ exports.create = (req, res) => {
     // order.address
     // order.products.length
     // order.amount
-    const emailData = {
-      to: "",
-      from: "",
-      subject: `A new order is received`,
-      html: `
-            <p>Customer name:</p>
-            <p>Total products: ${order.products.length}</p>
-            <p>Total cost: ${order.amount}</p>
-            <p>Login to dashboard to the order in detail.</p>
-        `
-    };
+    // const emailData = {
+    //   to: "",
+    //   from: "",
+    //   subject: `A new order is received`,
+    //   html: `
+    //         <p>Customer name:</p>
+    //         <p>Total products: ${order.products.length}</p>
+    //         <p>Total cost: ${order.amount}</p>
+    //         <p>Login to dashboard to the order in detail.</p>
+    //     `
+    // };
     // sgMail.send(emailData);
     res.json(data);
   });
