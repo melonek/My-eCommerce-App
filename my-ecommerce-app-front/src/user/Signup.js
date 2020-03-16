@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../core/Layout";
-import { API } from "../config";
 import { signup } from "../auth";
 
 const Signup = () => {
@@ -96,7 +95,7 @@ const Signup = () => {
   return (
     <Layout
       title="Signup"
-      description="Signup to Node React e-Commerce App"
+      description="Signup to Node React E-commerce App"
       className="container col-md-8 offset-md-2"
     >
       {showSuccess()}

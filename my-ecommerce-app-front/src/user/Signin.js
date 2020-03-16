@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import Layout from "../core/Layout";
-import { API } from "../config";
 import { signin, authenticate, isAuthenticated } from "../auth";
 
 const Signin = () => {
   const [values, setValues] = useState({
-    email: "babolek@wp.pl",
-    password: "babolek1",
+    email: "babcia@wp.pl",
+    password: "babcia1",
     error: "",
     loading: false,
-    redirectToRefferer: false
+    redirectToReferrer: false
   });
 
-  const { email, password, loading, error, redirectToRefferer } = values;
+  const { email, password, loading, error, redirectToReferrer } = values;
   const { user } = isAuthenticated();
 
   const handleChange = name => event => {
@@ -81,7 +80,7 @@ const Signin = () => {
     );
 
   const redirectUser = () => {
-    if (redirectToRefferer) {
+    if (redirectToReferrer) {
       if (user && user.role === 1) {
         return <Redirect to="/admin/dashboard" />;
       } else {
@@ -96,7 +95,7 @@ const Signin = () => {
   return (
     <Layout
       title="Signin"
-      description="Signin to Node React e-Commerce App"
+      description="Signin to Node React E-commerce App"
       className="container col-md-8 offset-md-2"
     >
       {showLoading()}

@@ -40,9 +40,10 @@ const Shop = () => {
     });
   };
 
-  const loadMore = newFilters => {
+  const loadMore = () => {
     let toSkip = skip + limit;
-    getFilteredProducts(toSkip, limit, newFilters.filters).then(data => {
+    // console.log(newFilters);
+    getFilteredProducts(toSkip, limit, myFilters.filters).then(data => {
       if (data.error) {
         setError(data.error);
       } else {
@@ -73,7 +74,8 @@ const Shop = () => {
     // console.log("SHOP", filters, filterBy);
     const newFilters = { ...myFilters };
     newFilters.filters[filterBy] = filters;
-    if (filterBy == "price") {
+
+    if (filterBy === "price") {
       let priceValues = handlePrice(filters);
       newFilters.filters[filterBy] = priceValues;
     }
@@ -95,8 +97,8 @@ const Shop = () => {
 
   return (
     <Layout
-      title="Shop Plantex"
-      description="Search for some unique plants! E-commerce App"
+      title="Shop Page"
+      description="Search and find books of your choice"
       className="container-fluid"
     >
       <div className="row">
@@ -127,6 +129,7 @@ const Shop = () => {
               </div>
             ))}
           </div>
+          <hr />
           {loadMoreButton()}
         </div>
       </div>
